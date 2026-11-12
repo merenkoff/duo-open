@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.view.WindowManager
 import com.duoopen.shell.ShizukuBridge
-import com.duoopen.shell.WallpaperAngleFeed
+import com.duoopen.shell.SamsungAngleFeed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +24,12 @@ object OverlayFeature {
     /** Called once per process (app and service share it). */
     fun initProcess(context: Context) {
         runCatching {
-            org.lsposed.hiddenapibypass.HiddenApiBypass.addHiddenApiExemptions("Landroid/view/ViewRootImpl;")
+            // ViewRootImpl: our own window's layer id, for capture exclusion.
+            // devicestate: the fold posture (DeviceStateFeed).
+            org.lsposed.hiddenapibypass.HiddenApiBypass.addHiddenApiExemptions(
+                "Landroid/view/ViewRootImpl;",
+                "Landroid/hardware/devicestate/",
+            )
         }
         ShizukuBridge.init(context)
     }
@@ -57,7 +62,7 @@ object OverlayFeature {
     fun refreshShizuku() = ShizukuBridge.refresh()
 
     /** Whether Samsung's fold-reactive wallpaper (the continuous-angle source) is the home wallpaper. */
-    fun foldWallpaperActive(context: Context): Boolean = WallpaperAngleFeed.foldWallpaperActive(context)
+    fun foldWallpaperActive(context: Context): Boolean = SamsungAngleFeed.foldWallpaperActive(context)
 
     /** Status of the continuous-angle reader, from the running service. */
     fun angleFeedStatus(): String = FoldOverlayService.instance?.angleFeedStatus() ?: "Service not running"

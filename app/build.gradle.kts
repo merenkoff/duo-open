@@ -24,8 +24,8 @@ android {
         // and OpenGL ES below (fold/gl); see AgslFold and GlFoldRenderer.
         minSdk = 30
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.3.0"
+        versionCode = 5
+        versionName = "1.4.0"
     }
 
     // full: system-wide fold via the accessibility service (+ wallpaper).
@@ -96,4 +96,7 @@ dependencies {
     "fullImplementation"("dev.rikka.shizuku:api:13.1.5")
     "fullImplementation"("dev.rikka.shizuku:provider:13.1.5")
     "fullImplementation"("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
+
+    // JVM unit tests for the pure hinge maths (./gradlew testFullDebugUnitTest).
+    testImplementation("junit:junit:4.13.2")
 }
